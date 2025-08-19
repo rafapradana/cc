@@ -2,11 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { StudentLayout } from '@/components/student/student-layout'
-import { ProjectCard } from '@/components/ui/project-card'
-import { 
-  mockProjects,
-  getProjectsByStudentId 
-} from '@/lib/mock-data'
+import { getProjectsByStudentId } from '@/lib/mock-data'
 import { 
   FolderOpen, 
   Eye, 
@@ -15,8 +11,6 @@ import {
   Star,
   Plus,
   ArrowRight,
-  Github,
-  Linkedin,
   Award,
   Target
 } from 'lucide-react'

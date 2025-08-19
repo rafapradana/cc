@@ -3,14 +3,14 @@
 import { useState, useRef, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
+
 import {
   MessageCircle,
   X,
   Send,
   Bot,
   Sparkles,
-  User,
+
   Maximize2
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -25,7 +25,7 @@ interface Message {
 
 export function AIChatbot() {
   const [isOpen, setIsOpen] = useState(false)
-  const [isMinimized, setIsMinimized] = useState(false)
+  const [isMinimized] = useState(false)
   const [isMaximized, setIsMaximized] = useState(false)
   const [messages, setMessages] = useState<Message[]>([
     {

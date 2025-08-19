@@ -1,23 +1,14 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { AdminLayout } from '@/components/admin/admin-layout'
-import { StudentCard } from '@/components/ui/student-card'
-import { ProjectCard } from '@/components/ui/project-card'
-import { 
-  mockStats, 
-  getTopStudents, 
-  getTopProjects,
-  mockStudents,
-  mockProjects 
-} from '@/lib/mock-data'
+import { mockStats, getTopStudents, getTopProjects } from '@/lib/mock-data'
 import { 
   Users, 
   FolderOpen, 
   Eye, 
   Code2, 
   TrendingUp,
-  Calendar,
+
   Star,
   Activity,
   Plus,

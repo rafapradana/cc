@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { AdminLayout } from '@/components/admin/admin-layout'
-import { DataTable } from '@/components/admin/data-table'
+import { DataTable, type Column } from '@/components/admin/data-table'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { mockProjects, type Project } from '@/lib/mock-data'
@@ -27,17 +27,20 @@ export default function AdminProjectsPage() {
     {
       key: 'image',
       label: 'Gambar',
-      render: (value: string, row: Project) => (
-        <div className="relative w-16 h-12 rounded-lg overflow-hidden">
-          <Image
-            src={value}
-            alt={row.title}
-            fill
-            className="object-cover"
-            sizes="64px"
-          />
-        </div>
-      )
+      render: (value: unknown, row: Project) => {
+        const imageUrl = value as string;
+        return (
+          <div className="relative w-16 h-12 rounded-lg overflow-hidden">
+            <Image
+              src={imageUrl}
+              alt={row.title}
+              fill
+              className="object-cover"
+              sizes="64px"
+            />
+          </div>
+        );
+      }
     },
     {
       key: 'title',
@@ -127,7 +130,7 @@ export default function AdminProjectsPage() {
     {
       key: 'links',
       label: 'Links',
-      render: (value: any, row: any) => (
+      render: (_value: unknown, row: Project) => (
         <div className="flex gap-1">
           {row.githubUrl && (
             <a 
@@ -152,19 +155,19 @@ export default function AdminProjectsPage() {
         </div>
       )
     }
-  ]
+  ] as const
 
   const handleAdd = () => {
     console.log('Add project')
     // Navigate to add project form
   }
 
-  const handleEdit = (project: any) => {
+  const handleEdit = (project: Project) => {
     console.log('Edit project:', project)
     // Navigate to edit project form
   }
 
-  const handleDelete = (project: any) => {
+  const handleDelete = (project: Project) => {
     console.log('Delete project:', project)
     // Show confirmation dialog and delete
     if (confirm(`Apakah Anda yakin ingin menghapus project ${project.title}?`)) {
@@ -172,7 +175,7 @@ export default function AdminProjectsPage() {
     }
   }
 
-  const handleView = (project: any) => {
+  const handleView = (project: Project) => {
     console.log('View project:', project)
     // Navigate to project detail page
   }
@@ -187,10 +190,10 @@ export default function AdminProjectsPage() {
           </p>
         </div>
 
-        <DataTable
+        <DataTable<Project>
           title="Daftar Projects"
           description="Semua project yang telah dipublish di platform"
-          columns={columns}
+          columns={columns as unknown as Column<Project>[]}
           data={projects}
           onAdd={handleAdd}
           onEdit={handleEdit}

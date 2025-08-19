@@ -2,10 +2,8 @@
 
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { 
-  MoreHorizontal, 
   Edit, 
   Trash2, 
   Eye, 
@@ -16,27 +14,27 @@ import {
   ChevronRight
 } from 'lucide-react'
 
-interface Column {
-  key: string
+export interface Column<T extends Record<string, unknown>> {
+  key: keyof T
   label: string
   sortable?: boolean
-  render?: (value: any, row: any) => React.ReactNode
+  render?: (value: T[keyof T], row: T) => React.ReactNode
 }
 
-interface DataTableProps {
+interface DataTableProps<T extends Record<string, unknown>> {
   title: string
   description?: string
-  columns: Column[]
-  data: any[]
+  columns: Column<T>[]
+  data: T[]
   onAdd?: () => void
-  onEdit?: (item: any) => void
-  onDelete?: (item: any) => void
-  onView?: (item: any) => void
+  onEdit?: (item: T) => void
+  onDelete?: (item: T) => void
+  onView?: (item: T) => void
   searchPlaceholder?: string
   addButtonText?: string
 }
 
-export function DataTable({
+export function DataTable<T extends Record<string, unknown>>({
   title,
   description,
   columns,
@@ -47,10 +45,10 @@ export function DataTable({
   onView,
   searchPlaceholder = "Cari...",
   addButtonText = "Tambah"
-}: DataTableProps) {
+}: DataTableProps<T>) {
   const [searchTerm, setSearchTerm] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
-  const [sortColumn, setSortColumn] = useState<string | null>(null)
+  const [sortColumn, setSortColumn] = useState<keyof T | null>(null)
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
   
   const itemsPerPage = 10
@@ -68,9 +66,19 @@ export function DataTable({
     
     const aValue = a[sortColumn]
     const bValue = b[sortColumn]
-    
-    if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1
-    if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1
+
+    if (typeof aValue === 'string' && typeof bValue === 'string') {
+      return sortDirection === 'asc' 
+        ? aValue.localeCompare(bValue)
+        : bValue.localeCompare(aValue)
+    }
+
+    if (typeof aValue === 'number' && typeof bValue === 'number') {
+      return sortDirection === 'asc'
+        ? aValue - bValue
+        : bValue - aValue
+    }
+
     return 0
   })
 
@@ -79,7 +87,7 @@ export function DataTable({
   const startIndex = (currentPage - 1) * itemsPerPage
   const paginatedData = sortedData.slice(startIndex, startIndex + itemsPerPage)
 
-  const handleSort = (column: string) => {
+  const handleSort = (column: keyof T) => {
     if (sortColumn === column) {
       setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
     } else {
@@ -136,7 +144,7 @@ export function DataTable({
                 <tr>
                   {columns.map((column) => (
                     <th
-                      key={column.key}
+                      key={String(column.key)}
                       className={`px-4 py-3 text-left text-sm font-medium text-muted-foreground ${
                         column.sortable ? 'cursor-pointer hover:text-foreground' : ''
                       }`}
@@ -161,10 +169,10 @@ export function DataTable({
                 {paginatedData.map((item, index) => (
                   <tr key={index} className="hover:bg-muted/50">
                     {columns.map((column) => (
-                      <td key={column.key} className="px-4 py-3 text-sm">
+                      <td key={String(column.key)} className="px-4 py-3 text-sm">
                         {column.render 
                           ? column.render(item[column.key], item)
-                          : item[column.key]
+                          : String(item[column.key])
                         }
                       </td>
                     ))}

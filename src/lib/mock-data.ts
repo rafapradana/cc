@@ -1,6 +1,6 @@
 // Mock data untuk Codepacker Catalog
 
-export interface Student {
+export interface Student extends Record<string, unknown> {
   id: string
   name: string
   class: string
@@ -13,7 +13,7 @@ export interface Student {
   viewCount: number
 }
 
-export interface Project {
+export interface Project extends Record<string, unknown> {
   id: string
   title: string
   description: string

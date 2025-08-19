@@ -1,22 +1,23 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { StudentLayout } from '@/components/student/student-layout'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { FormField, TagInput, FileUpload } from '@/components/admin/form-field'
-import { mockProjects } from '@/lib/mock-data'
+import { mockProjects, type Project } from '@/lib/mock-data'
 import { ArrowLeft, Save, X, Trash2 } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 
-export default function EditProjectPage() {
+function EditProjectPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const projectId = searchParams.get('id')
   
   const [isLoading, setIsLoading] = useState(false)
-  const [project, setProject] = useState<any>(null)
+  const [project, setProject] = useState<Project | null>(null)
   
   const [formData, setFormData] = useState({
     title: '',
@@ -174,7 +175,7 @@ export default function EditProjectPage() {
           <div className="flex-1">
             <h1 className="text-3xl font-bold">Edit Project</h1>
             <p className="text-muted-foreground">
-              Update informasi project "{project.title}"
+              Update informasi project &quot;{project.title}&quot;
             </p>
           </div>
           <Button 
@@ -329,10 +330,11 @@ export default function EditProjectPage() {
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Gambar Saat Ini</label>
                       <div className="w-full h-32 bg-muted rounded-lg overflow-hidden">
-                        <img 
+                        <Image 
                           src={formData.currentImage} 
                           alt="Current project image"
-                          className="w-full h-full object-cover"
+                          fill
+                          className="object-cover"
                         />
                       </div>
                     </div>
@@ -410,5 +412,13 @@ export default function EditProjectPage() {
         </form>
       </div>
     </StudentLayout>
+  )
+}
+
+export default function EditProjectPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <EditProjectPageContent />
+    </Suspense>
   )
 }

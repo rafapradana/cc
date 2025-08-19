@@ -2,11 +2,12 @@
 
 import { useState } from 'react'
 import { StudentLayout } from '@/components/student/student-layout'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { ProjectCard } from '@/components/ui/project-card'
 import { getProjectsByStudentId } from '@/lib/mock-data'
+import Image from 'next/image'
 import { 
   FolderOpen, 
   Plus, 
@@ -220,11 +221,12 @@ export default function StudentProjectsPage() {
                 <Card key={project.id}>
                   <CardContent className="p-4">
                     <div className="flex items-start gap-4">
-                      <div className="w-20 h-16 bg-muted rounded-lg flex-shrink-0 overflow-hidden">
-                        <img 
+                      <div className="relative w-20 h-16 bg-muted rounded-lg flex-shrink-0 overflow-hidden">
+                        <Image 
                           src={project.image} 
                           alt={project.title}
-                          className="w-full h-full object-cover"
+                          fill
+                          className="object-cover"
                         />
                       </div>
                       <div className="flex-1 space-y-2">

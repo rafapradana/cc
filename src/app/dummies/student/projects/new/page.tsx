@@ -6,7 +6,7 @@ import { StudentLayout } from '@/components/student/student-layout'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { FormField, TagInput, FileUpload } from '@/components/admin/form-field'
-import { ArrowLeft, Save, X, Upload, Link as LinkIcon } from 'lucide-react'
+import { ArrowLeft, Save, X } from 'lucide-react'
 import Link from 'next/link'
 
 export default function NewProjectPage() {

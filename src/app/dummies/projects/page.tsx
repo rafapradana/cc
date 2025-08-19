@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input'
 import { ProjectCard } from '@/components/ui/project-card'
 import { Navbar } from '@/components/layout/navbar'
 import { Footer } from '@/components/layout/footer'
-import { mockProjects } from '@/lib/mock-data'
+import { mockProjects, type Project } from '@/lib/mock-data'
 import { FolderOpen, Filter, Search, X } from 'lucide-react'
 
 export default function ProjectsPage() {
@@ -24,7 +24,7 @@ export default function ProjectsPage() {
       const matchesSearch = searchQuery === '' ||
         project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         project.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        project.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        project.studentName.toLowerCase().includes(searchQuery.toLowerCase()) ||
         project.techStack.some(tech => tech.toLowerCase().includes(searchQuery.toLowerCase()))
 
       const matchesCategory = selectedCategory === null || project.category === selectedCategory

@@ -2,10 +2,10 @@
 
 import { useState } from 'react'
 import { AdminLayout } from '@/components/admin/admin-layout'
-import { DataTable } from '@/components/admin/data-table'
+import { DataTable, type Column } from '@/components/admin/data-table'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { mockStudents } from '@/lib/mock-data'
+import { mockStudents, type Student } from '@/lib/mock-data'
 import { Eye, Github, Linkedin } from 'lucide-react'
 
 export default function AdminStudentsPage() {
@@ -15,22 +15,25 @@ export default function AdminStudentsPage() {
     {
       key: 'avatar',
       label: 'Foto',
-      render: (value: string, row: any) => (
-        <Avatar className="h-10 w-10">
-          <AvatarImage src={value} alt={row.name} />
-          <AvatarFallback>
-            {row.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2)}
-          </AvatarFallback>
-        </Avatar>
-      )
+      render: (value: unknown, row: Student) => {
+        const avatarUrl = value as string;
+        return (
+          <Avatar className="h-10 w-10">
+            <AvatarImage src={avatarUrl} alt={row.name} />
+            <AvatarFallback>
+              {row.name.split(' ').map((n) => n[0]).join('').slice(0, 2)}
+            </AvatarFallback>
+          </Avatar>
+        );
+      }
     },
     {
       key: 'name',
       label: 'Nama',
       sortable: true,
-      render: (value: string, row: any) => (
+      render: (value: unknown, row: Student) => (
         <div>
-          <div className="font-medium">{value}</div>
+          <div className="font-medium">{value as string}</div>
           <div className="text-sm text-muted-foreground">{row.class}</div>
         </div>
       )
@@ -38,44 +41,47 @@ export default function AdminStudentsPage() {
     {
       key: 'skills',
       label: 'Skills',
-      render: (value: string[]) => (
-        <div className="flex flex-wrap gap-1">
-          {value.slice(0, 2).map((skill) => (
-            <Badge key={skill} variant="outline" className="text-xs">
-              {skill}
-            </Badge>
-          ))}
-          {value.length > 2 && (
-            <Badge variant="outline" className="text-xs">
-              +{value.length - 2}
-            </Badge>
-          )}
-        </div>
-      )
+      render: (value: unknown) => {
+        const skills = value as string[];
+        return (
+          <div className="flex flex-wrap gap-1">
+            {skills.slice(0, 2).map((skill) => (
+              <Badge key={skill} variant="outline" className="text-xs">
+                {skill}
+              </Badge>
+            ))}
+            {skills.length > 2 && (
+              <Badge variant="outline" className="text-xs">
+                +{skills.length - 2}
+              </Badge>
+            )}
+          </div>
+        );
+      }
     },
     {
       key: 'projectCount',
       label: 'Projects',
       sortable: true,
-      render: (value: number) => (
-        <Badge variant="secondary">{value}</Badge>
+      render: (value: unknown) => (
+        <Badge variant="secondary">{value as number}</Badge>
       )
     },
     {
       key: 'viewCount',
       label: 'Views',
       sortable: true,
-      render: (value: number) => (
+      render: (value: unknown) => (
         <div className="flex items-center gap-1">
           <Eye className="h-3 w-3 text-muted-foreground" />
-          <span>{value.toLocaleString()}</span>
+          <span>{(value as number).toLocaleString()}</span>
         </div>
       )
     },
     {
       key: 'social',
       label: 'Social',
-      render: (value: any, row: any) => (
+      render: (_value: unknown, row: Student) => (
         <div className="flex gap-1">
           {row.github && (
             <a 
@@ -100,19 +106,19 @@ export default function AdminStudentsPage() {
         </div>
       )
     }
-  ]
+  ] as const
 
   const handleAdd = () => {
     console.log('Add student')
     // Navigate to add student form
   }
 
-  const handleEdit = (student: any) => {
+  const handleEdit = (student: Student) => {
     console.log('Edit student:', student)
     // Navigate to edit student form
   }
 
-  const handleDelete = (student: any) => {
+  const handleDelete = (student: Student) => {
     console.log('Delete student:', student)
     // Show confirmation dialog and delete
     if (confirm(`Apakah Anda yakin ingin menghapus siswa ${student.name}?`)) {
@@ -120,7 +126,7 @@ export default function AdminStudentsPage() {
     }
   }
 
-  const handleView = (student: any) => {
+  const handleView = (student: Student) => {
     console.log('View student:', student)
     // Navigate to student detail page
   }
@@ -135,10 +141,10 @@ export default function AdminStudentsPage() {
           </p>
         </div>
 
-        <DataTable
+        <DataTable<Student>
           title="Daftar Siswa"
           description="Semua siswa yang terdaftar di platform"
-          columns={columns}
+          columns={columns as unknown as Column<Student>[]}
           data={students}
           onAdd={handleAdd}
           onEdit={handleEdit}

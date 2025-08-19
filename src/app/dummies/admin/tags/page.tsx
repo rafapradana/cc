@@ -5,9 +5,8 @@ import { AdminLayout } from '@/components/admin/admin-layout'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { FormField, TagInput } from '@/components/admin/form-field'
-import { mockStudents, mockProjects } from '@/lib/mock-data'
-import { Code2, Users, FolderOpen, Tag, Plus, Trash2, Edit } from 'lucide-react'
+import { mockStudents, mockProjects, type Project } from '@/lib/mock-data'
+import { Code2, Tag, Plus, Trash2, Users, FolderOpen } from 'lucide-react'
 
 export default function AdminTagsPage() {
   // Extract unique tags from mock data
@@ -18,12 +17,12 @@ export default function AdminTagsPage() {
 
   const [skills, setSkills] = useState(allSkills)
   const [techStacks, setTechStacks] = useState(allTechStacks)
-  const [categories, setCategories] = useState(allCategories)
+  const [categories, setCategories] = useState<Project['category'][]>(allCategories)
   const [classes, setClasses] = useState(allClasses)
 
   const [newSkill, setNewSkill] = useState('')
   const [newTechStack, setNewTechStack] = useState('')
-  const [newCategory, setNewCategory] = useState('')
+  const [newCategory, setNewCategory] = useState<Project['category']>('Web')
   const [newClass, setNewClass] = useState('')
 
   const addSkill = () => {
@@ -49,13 +48,13 @@ export default function AdminTagsPage() {
   }
 
   const addCategory = () => {
-    if (newCategory.trim() && !categories.includes(newCategory.trim())) {
-      setCategories([...categories, newCategory.trim()].sort())
-      setNewCategory('')
+    if (!categories.includes(newCategory)) {
+      setCategories([...categories, newCategory].sort())
+      setNewCategory('Web')
     }
   }
 
-  const removeCategory = (category: string) => {
+  const removeCategory = (category: Project['category']) => {
     setCategories(categories.filter(c => c !== category))
   }
 
@@ -186,14 +185,17 @@ export default function AdminTagsPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex gap-2">
-                <input
-                  type="text"
+                <select
                   value={newCategory}
-                  onChange={(e) => setNewCategory(e.target.value)}
-                  placeholder="Tambah kategori baru..."
+                  onChange={(e) => setNewCategory(e.target.value as Project['category'])}
                   className="flex-1 px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-                  onKeyDown={(e) => e.key === 'Enter' && addCategory()}
-                />
+                >
+                  <option value="Web">Web</option>
+                  <option value="Mobile">Mobile</option>
+                  <option value="Game">Game</option>
+                  <option value="Desktop">Desktop</option>
+                  <option value="CLI">CLI</option>
+                </select>
                 <Button onClick={addCategory} size="sm">
                   <Plus className="h-4 w-4" />
                 </Button>

@@ -468,7 +468,7 @@ export default function ChatbotShowcase() {
                   <h4 className="font-semibold text-gray-900 mb-2">1. Import Komponen</h4>
                   <div className="bg-gray-900 rounded-md p-3 overflow-x-auto">
                     <code className="text-sm text-green-400">
-                      import &#123; AIChatbot &#125; from '@/components/ui/ai-chatbot'
+                      import &#123; AIChatbot &#125; from &apos;@/components/ui/ai-chatbot&apos;
                     </code>
                   </div>
                 </div>
@@ -486,7 +486,7 @@ export default function ChatbotShowcase() {
                   <h4 className="font-semibold text-gray-900 mb-2">3. Kustomisasi (Opsional)</h4>
                   <div className="bg-gray-900 rounded-md p-3 overflow-x-auto">
                     <code className="text-sm text-green-400">
-                      &lt;AIChatbot variant="compact" position="bottom-left" /&gt;
+                      &lt;AIChatbot variant=&quot;compact&quot; position=&quot;bottom-left&quot; /&gt;
                     </code>
                   </div>
                 </div>

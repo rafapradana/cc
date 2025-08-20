@@ -6,10 +6,10 @@ import { usePathname } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { 
-  LayoutDashboard, 
-  User, 
-  FolderOpen, 
+import {
+  LayoutDashboard,
+  User,
+  FolderOpen,
   Settings,
   Menu,
   X,
@@ -18,7 +18,8 @@ import {
   Home,
   Bell,
   Search,
-  Plus
+  Plus,
+  Brain
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -31,6 +32,11 @@ const sidebarItems = [
     title: 'Dashboard',
     href: '/dummies/student/dashboard',
     icon: LayoutDashboard,
+  },
+  {
+    title: 'AI Upskilling Companion',
+    href: '/dummies/student/ai-upskilling',
+    icon: Brain,
   },
   {
     title: 'Profil Saya',

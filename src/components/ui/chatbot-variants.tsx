@@ -11,7 +11,6 @@ import {
   Bot,
   Sparkles,
   Minimize2,
-  Maximize2,
   Settings
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
